@@ -1,6 +1,12 @@
-# project_task
+# Project Task
 
-A new Flutter project.
+A new Flutter an application where a user can track their working hours only within the 10
+meter radius from the project site.
+
+## Flutter & Dart version
+
+- Flutter 3.3.9 • channel stable
+- Dart 2.18.5 • DevTools 2.15.0
 
 ## Getting Started
 
