@@ -8,6 +8,14 @@ meter radius from the project site.
 - Flutter 3.3.9 • channel stable
 - Dart 2.18.5 • DevTools 2.15.0
 
+## Package used
+
+[geolocator](https://pub.dev/packages/geolocator) Flutter geolocation plugin which provides easy access to platform specific location services.
+
+- Get the current location of the device
+- Get continuous location updates
+- Calculate the distance (in meters) between two geocoordinates
+
 ## Getting Started
   - If you don't have Flutter SDK installed, please visit official [Flutter](https://flutter.dev/) site.
   - Fetch latest source code from master branch.
