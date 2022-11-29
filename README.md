@@ -9,14 +9,17 @@ meter radius from the project site.
 - Dart 2.18.5 • DevTools 2.15.0
 
 ## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+  - If you don't have Flutter SDK installed, please visit official [Flutter](https://flutter.dev/) site.
+  - Fetch latest source code from master branch.
+ 
+ ```
+ git clone https://github.com/Gursewak-Uppal/Track-Working-Hours.git
+ ```  
+ - Run the app with Android Studio or Visual Studio. Or the command line.
+ 
+ ```
+ flutter pub get
+ ```
+ ```
+ flutter run
+ ```
