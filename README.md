@@ -16,6 +16,15 @@ meter radius from the project site.
 - Get continuous location updates
 - Calculate the distance (in meters) between two geocoordinates
 
+## Setup
+
+- Go to lib/utils/app_utils.dart and set you current latitude and longitude (projectLat & projectLong).
+- Make sure your current location is on during app testing.
+
+## Gif
+
+<img src="https://github.com/Gursewak-Uppal/Track-Working-Hours/blob/main/gif/Record_2022-11-29-15-47-48.gif?raw=true"  height="420" /> 
+
 ## Getting Started
   - If you don't have Flutter SDK installed, please visit official [Flutter](https://flutter.dev/) site.
   - Fetch latest source code from master branch.
