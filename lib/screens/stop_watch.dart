@@ -1,8 +1,10 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:project_task/utils/app_utils.dart';
+import 'dart:math' show cos, sqrt, asin;
 
 class StopWatch extends StatefulWidget {
   final Function(Duration duration) onNewTaskEnd;
@@ -25,15 +27,23 @@ class _StopWatchState extends State<StopWatch> {
     _determineUserPosition();
   }
 
+  //listen user location changes
   _listenCurrentLocation() async {
-    Geolocator.getPositionStream().listen((position) {});
+    Geolocator.getPositionStream().listen((position) {
+      _userPosition = position;
+    });
   }
 
+  // method to get if user location in 10 meter radius
   bool _isProjectInRadius() {
     bool isProjectFound = false;
     try {
       if (_userPosition != null) {
-        double distance = Geolocator.distanceBetween(_userPosition!.latitude, _userPosition!.longitude, AppUtils.projectLat, AppUtils.projectLong);
+        double distance = Geolocator.distanceBetween(
+            AppUtils.projectLat,
+            AppUtils.projectLong,
+            _userPosition!.latitude,
+            _userPosition!.longitude);
 
         if (distance <= 10) {
           isProjectFound = true;
@@ -45,6 +55,7 @@ class _StopWatchState extends State<StopWatch> {
     return isProjectFound;
   }
 
+  //get user current location
   Future<Position?> _determineUserPosition() async {
     try {
       bool serviceEnabled;
@@ -74,14 +85,21 @@ class _StopWatchState extends State<StopWatch> {
 
       if (permission == LocationPermission.deniedForever) {
         // Permissions are denied forever, handle appropriately.
-        return Future.error('Location permissions are permanently denied, we cannot request permissions.');
+        return Future.error(
+            'Location permissions are permanently denied, we cannot request permissions.');
       }
 
       // When we reach here, permissions are granted and we can
       // continue accessing the position of the device.
       _userPosition = await Geolocator.getCurrentPosition();
       _listenCurrentLocation();
-      return _userPosition;
+
+      if (kDebugMode) {
+        print('latitude=> ${_userPosition!.latitude}');
+        print('longitude=> ${_userPosition!.longitude}');
+      }
+
+      return _userPosition; //Current location of device. Update latitude and longitude in app_utils.dart to track project in 10 meters radius
     } catch (e) {
       debugPrint("$e");
     }
@@ -161,7 +179,9 @@ class _StopWatchState extends State<StopWatch> {
             }
           },
           icon: Icon(
-            (timer?.isActive ?? false) ? Icons.pause : Icons.play_circle_outline,
+            (timer?.isActive ?? false)
+                ? Icons.pause
+                : Icons.play_circle_outline,
           ),
           iconSize: 24,
         ),

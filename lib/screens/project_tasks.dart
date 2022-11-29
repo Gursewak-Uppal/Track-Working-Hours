@@ -5,8 +5,10 @@ import '../models/task_data.dart';
 
 class ProjectTaskList extends StatelessWidget {
   final List<TaskData> taskList;
+  final void Function(int)? callback;
 
-  const ProjectTaskList({required this.taskList, Key? key}) : super(key: key);
+  const ProjectTaskList({required this.taskList, this.callback, Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,47 +16,124 @@ class ProjectTaskList extends StatelessWidget {
       color: Colors.white,
       child: ListView.builder(
           itemCount: taskList.length,
-          itemBuilder: (context, index) {
-            return _buildTaskData(index, Theme.of(context));
+          itemBuilder: (cont, index) {
+            return _buildTaskData(index, Theme.of(cont), context);
           }),
     );
   }
 
-  Widget _buildTaskData(int index, ThemeData themeData) {
+  //task list tile
+  Widget _buildTaskData(int index, ThemeData themeData, BuildContext context) {
     TaskData taskData = taskList[index];
     return Container(
         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-        decoration: BoxDecoration(border: Border.all(), borderRadius: BorderRadius.circular(10)),
+        decoration: BoxDecoration(
+            border: Border.all(), borderRadius: BorderRadius.circular(10)),
         child: ListTile(
+          onTap: () {
+            //remove task
+            _removeTask(context, index,
+                '${formatTime(taskData.startAt)} - ${formatTime(taskData.endAt)}');
+          },
           title: Text(
-            "Task ${index+1}",
+            "Task ${index + 1}",
             style: themeData.textTheme.titleSmall,
           ),
           subtitle: Row(
             children: [
-              _buildTimeWidget(taskData.startAt, themeData),
               Text(
-                " - ",
-                style: themeData.textTheme.titleLarge,
-              ),
-              _buildTimeWidget(taskData.endAt, themeData)
+                '${formatTime(taskData.startAt)} - ${formatTime(taskData.endAt)}',
+                style: themeData.textTheme.titleSmall,
+              )
             ],
           ),
           trailing: const Icon(
             Icons.arrow_forward_ios,
             color: Colors.black,
           ),
-        )
-        );
+        ));
   }
 
-  _buildTimeWidget(DateTime date, ThemeData themeData) {
+  //method for format time
+  String formatTime(DateTime date) {
     String hours = AppUtils.twoDigits(date.hour);
     String minute = AppUtils.twoDigits(date.minute);
-    return Text(
-      "$hours:$minute",
-      style: themeData.textTheme.titleSmall,
-    );
+    String sec = AppUtils.twoDigits(date.second);
+    return '$hours:$minute:$sec';
   }
 
+  //remove task alert dialog
+  void _removeTask(BuildContext context, int index, String time) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Tasks"),
+        content: Wrap(
+          children: [
+            const Divider(
+              color: Colors.black,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Task ${index + 1}',
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                Text(time)
+              ],
+            ),
+            const Divider(
+              color: Colors.black,
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            const Align(
+                alignment: Alignment.center,
+                child: Text(
+                  "Complete Task?",
+                )),
+            const Divider(
+              color: Colors.black,
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            GestureDetector(
+              behavior: HitTestBehavior.translucent,
+              onTap: () {
+                callback!(index);
+                Navigator.of(context).pop();
+              },
+              child: const Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    "Yes",
+                  )),
+            ),
+            const Divider(
+              color: Colors.black,
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            GestureDetector(
+              behavior: HitTestBehavior.translucent,
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              child: const Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    "No",
+                  )),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }
