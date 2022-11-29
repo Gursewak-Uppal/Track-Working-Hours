@@ -19,7 +19,7 @@ meter radius from the project site.
 ## Setup
 
 - Go to lib/utils/app_utils.dart and set you current latitude and longitude (projectLat & projectLong).
-- Make sure your current location is on during app testing.
+- Make sure your current location is ON during app testing.
 
 ## Gif
 
